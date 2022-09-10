@@ -1,0 +1,25 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/Gilroy-Regular.ttf",
+      "sha1": "8017fa012735b7328e737c58373e264b76323c60"
+    },
+    {
+      "path": "src/assets/fonts/Gilroy-SemiBold.ttf",
+      "sha1": "c6a7771fa8c42ba06d6a7a2a93bb233a26a6a62b"
+    },
+    {
+      "path": "src/assets/fonts/fa-brands-400.ttf",
+      "sha1": "8ab907083fecaaa2a9ec93b27f884ad74573705c"
+    },
+    {
+      "path": "src/assets/fonts/fa-regular-400.ttf",
+      "sha1": "c34acd6818df6db6be41a2e331886765d601f2eb"
+    },
+    {
+      "path": "src/assets/fonts/fa-solid-900.ttf",
+      "sha1": "eb8914f6b1797b45ee0883e6089d92695d9f9441"
+    }
+  ]
+}

@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
+Icon.loadFont();
 
 import routes from '../../../config/routes';
 import { Colors, Typography } from '../../../styles';

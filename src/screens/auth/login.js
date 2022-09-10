@@ -8,6 +8,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+Icon.loadFont();
 
 import { Colors, Typography } from '../../styles';
 import AuthContext from '../../context/AuthContext';

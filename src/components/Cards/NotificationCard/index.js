@@ -5,7 +5,6 @@ import {
     Text,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
 import { Colors, Typography } from '../../../styles';
 
 const NotificationCard = (props) => {

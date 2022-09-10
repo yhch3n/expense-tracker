@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
 import { Colors, Typography } from '../../../styles';
 
 const BackHeader = (props) => {

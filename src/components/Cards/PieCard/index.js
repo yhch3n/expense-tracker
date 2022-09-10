@@ -5,6 +5,7 @@ import {
     Text,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+Icon.loadFont();
 import CircularProgress from '../../CircularProgress';
 
 import { Colors, Typography } from '../../../styles';
