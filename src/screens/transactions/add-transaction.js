@@ -19,12 +19,28 @@ import { categories } from '../../utils/categories';
 import BackHeader from '../../components/Headers/BackHeader';
 import Button from '../../components/Button';
 
+import GetLocation from 'react-native-get-location'
+
 const AddTransaction = ({navigation, route}) => {
     const [category, setCategory] = useState();
     const [income, setIncome] = useState(false);
     const [showDate, setShowDate] = useState(false);
     const [date, setDate] = useState(new Date());
     const [amount, setAmount] = useState('');
+    const [myText, setLocation] = React.useState('Waiting..');
+
+    const location = GetLocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 15000,
+    })
+    .then(location => {
+        console.log(location);
+        setLocation(`Lat: ${location['latitude']}, Long: ${location['longitude']}`)
+    })
+    .catch(error => {
+        const { code, message } = error;
+        console.warn(code, message);
+    })
 
     useEffect(() => {
         if (route.params?.item) {
@@ -152,6 +168,12 @@ const AddTransaction = ({navigation, route}) => {
                         onChangeText={(text) => setAmount(text)}
                         placeholderTextColor={Colors.GRAY_MEDIUM}
                         style={[styles.input, Typography.BODY]} />
+                </View>
+
+                {/* Location */}
+                <View style={styles.inputContainer}>
+                    <Text style={[Typography.TAGLINE, {color: Colors.GRAY_DARK}]}>Location: </Text>
+                    <Text style={[Typography.TAGLINE, {color: Colors.GRAY_DARK}]} onPress={() => setLocation('Changed Text')}>{myText}</Text>
                 </View>
             </ScrollView>
 
