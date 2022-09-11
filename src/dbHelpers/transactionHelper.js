@@ -191,7 +191,7 @@ export const getTotalExpenses = (setTotalExpenses) => {
 
 // Insert Transactions
 export const insertTransaction = (item) => {
-    if (item.amount == 0) {
+    if (!item.amount || item.amount == 0) {
         Alert.alert('Oups !', 'Please, write correct data.')
     }
     else {
@@ -206,7 +206,7 @@ export const insertTransaction = (item) => {
 
 // Update Transactions
 export const updateTransaction = (item) => {
-    if (item.amount == 0) {
+    if (!item.amount || item.amount == 0) {
         Alert.alert('Oups !', 'Please, write correct data.')
     }
     else {
