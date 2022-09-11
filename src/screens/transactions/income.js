@@ -27,8 +27,8 @@ const Income = ({navigation, route}) => {
     }, [focused]);
 
     // Delete Item
-    const __delete = (id) => {
-        deleteTransaction(id);
+    const __delete = (item) => {
+        deleteTransaction(item);
         getIncomes(setIncomes);
     }
 

@@ -35,8 +35,8 @@ const Home = ({navigation}) => {
     }, [focused]);
 
     // Delete Item
-    const __delete = (id) => {
-        deleteTransaction(id);
+    const __delete = (item) => {
+        deleteTransaction(item);
         getTransactions(setTransactions);
         getTotalIncomes(setTotalIncomes);
         getTotalExpenses(setTotalExpenses);

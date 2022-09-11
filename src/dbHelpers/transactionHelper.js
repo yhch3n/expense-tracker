@@ -1,6 +1,13 @@
 import { Alert } from 'react-native';
 import db from './openDB';
-
+import { firebaseDB } from '../../firebase-config.js';
+import {
+    ref,
+    onValue,
+    push,
+    update,
+    remove
+  } from 'firebase/database';
 // Table Name
 const tableName = 'transactions';
 
@@ -74,72 +81,56 @@ export const getTransactions = (setTransactions) => {
 
 // Get Incomes
 export const getIncomes = (setIncomes) => {
-    db.transaction((tx) => {
-        tx.executeSql(
-            'SELECT * FROM ' + tableName + ' WHERE type = ?',
-            ['income'],
-            (tx, results) => {
-                var len = results.rows.length;
-                let result = [];
-
-                if (len > 0) {
-                    for (let i = 0; i < len; i++) {
-                        let row = results.rows.item(i);
-                        result.push({
-                            id: row.id,
-                            category: row.category,
-                            icon: row.icon,
-                            transaction_date: row.transaction_date,
-                            amount: row.amount,
-                            type: row.type
-                        })
-                    }
-                }
-                else {
-                    console.log('empty');
-                }
-                setIncomes(result);
-            },
-            error => {
-                console.log(error);
+    return onValue(ref(firebaseDB, '/income'), querySnapShot => {
+        let data = querySnapShot.val() || {};
+        let transactions = {...data};
+        const keys = Object.keys(transactions);
+        console.log(transactions);
+        var len = keys.length;
+        let result = [];
+        if (len > 0) {
+            for (let i = 0; i < len; i++) {
+                let key = keys[i];
+                let data = transactions[key];
+                result.push({
+                    id: key,
+                    category: data['category'],
+                    icon: data['icon'],
+                    transaction_date: data['date'],
+                    amount: data['amount'],
+                    type: 'income'
+                })
             }
-        );
-    });
+        }
+        setIncomes(result);
+      });
 }
 
 // Get Expenses
 export const getExpenses = (setExpenses) => {
-    db.transaction((tx) => {
-        tx.executeSql(
-            'SELECT * FROM ' + tableName + ' WHERE type = ?',
-            ['expense'],
-            (tx, results) => {
-                var len = results.rows.length;
-                let result = [];
-
-                if (len > 0) {
-                    for (let i = 0; i < len; i++) {
-                        let row = results.rows.item(i);
-                        result.push({
-                            id: row.id,
-                            category: row.category,
-                            icon: row.icon,
-                            transaction_date: row.transaction_date,
-                            amount: row.amount,
-                            type: row.type
-                        })
-                    }
-                }
-                else {
-                    console.log('empty');
-                }
-                setExpenses(result);
-            },
-            error => {
-                console.log(error);
+    return onValue(ref(firebaseDB, '/expense'), querySnapShot => {
+        let data = querySnapShot.val() || {};
+        let transactions = {...data};
+        const keys = Object.keys(transactions);
+        console.log(transactions);
+        var len = keys.length;
+        let result = [];
+        if (len > 0) {
+            for (let i = 0; i < len; i++) {
+                let key = keys[i];
+                let data = transactions[key];
+                result.push({
+                    id: key,
+                    category: data['category'],
+                    icon: data['icon'],
+                    transaction_date: data['date'],
+                    amount: data['amount'],
+                    type: 'expense'
+                })
             }
-        );
-    });
+        }
+        setExpenses(result);
+      });
 }
 
 // GetTotal Incomes
@@ -204,17 +195,11 @@ export const insertTransaction = (item) => {
         Alert.alert('Oups !', 'Please, write correct data.')
     }
     else {
-        db.transaction((tx) => {
-            tx.executeSql(
-                'INSERT INTO ' + tableName + '(category, icon, transaction_date, amount, type) VALUES(?,?,?,?,?);',
-                [item.category, item.icon, item.date, item.amount, item.type],
-                () => {
-                    console.log('inserted');
-                },
-                error => {
-                    console.log(error);
-                }
-            );
+        push(ref(firebaseDB, '/'+item.type), {
+            category: item.category,
+            icon: item.icon,
+            date: item.date,
+            amount: item.amount,
         });
     }
 }
@@ -225,35 +210,20 @@ export const updateTransaction = (item) => {
         Alert.alert('Oups !', 'Please, write correct data.')
     }
     else {
-        db.transaction((tx) => {
-            tx.executeSql(
-                'UPDATE ' + tableName + ' SET category = ?, icon = ?, transaction_date = ?, amount = ?, type = ? WHERE id = ?',
-                [item.category, item.icon, item.date, item.amount, item.type, item.id],
-                () => {
-                    console.log('updated');
-                },
-                error => {
-                    console.log(error);
-                }
-            );
-        });
+        update(ref(firebaseDB, `${item.type}/`), {
+            [item.id]: {
+              category: item.category,
+              icon: item.icon,
+              date: item.date,
+              amount: item.amount,
+            },
+          });
     }
 }
 
 // Delete Transaction
-export const deleteTransaction = (id) => {
-    db.transaction((tx) => {
-        tx.executeSql(
-            'DELETE FROM ' + tableName + ' WHERE id = ?',
-            [id],
-            () => {
-                console.log('deleted');
-            },
-            error => {
-                console.log(error);
-            }
-        );
-    });
+export const deleteTransaction = (item) => {
+    remove(ref(firebaseDB, `${item.type}/${item.id}`));
 }
 
 // Drop Table
